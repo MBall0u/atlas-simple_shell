@@ -16,11 +16,13 @@ int main(void)
 	buf = malloc(size);
 	if (!buf)
 	{
+		perror("Error");
 		return (1);
 	}
 	args = malloc(sizeof(char *) * size);
 	if (!args)
 	{
+		perror("Error");
 		return (1);
 	}
 
@@ -45,10 +47,20 @@ int main(void)
 		if (cmd == 0)
 		{
 			check = execve(args[0], args, NULL);
+			if (check == -1)
+			{
+				perror("Error");
+				return (1);
+			}
 		}
 		else
 		{
 			check = waitpid(cmd, &status, 0);
+			if (check == -1)
+			{
+				perror("Error");
+				return (1);
+			}
 		}
 		free(buf);
 		free(args);
