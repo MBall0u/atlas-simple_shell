@@ -45,22 +45,14 @@ int main(void)
 		if (cmd == 0)
 		{
 			check = execve(args[0], args, NULL);
-			if (check == -1)
-			{
-				return (1);
-			}
 		}
 		else
 		{
 			check = waitpid(cmd, &status, 0);
-			if (check == -1)
-			{
-				return (1);
-			}
 		}
+		free(buf);
+		free(args);
+		buf = NULL;
 	}
-	free(buf);
-	free(args);
-	buf = NULL;
 	return (0);
 }
