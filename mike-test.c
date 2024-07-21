@@ -6,7 +6,7 @@
 #include <sys/wait.h>
 int main(void)
 {
-	char *s, *sep = "\n ", *buf, *word;
+	char *sep = "\n ", *buf, *word;
 	size_t size = 64;
 	pid_t cmd;
 	int status, count = 0;
@@ -16,13 +16,11 @@ int main(void)
 	buf = malloc(size);
 	if (!buf)
 	{
-		perror(s);
 		return (1);
 	}
 	args = malloc(sizeof(char *) * size);
 	if (!args)
 	{
-		perror(s);
 		return (1);
 	}
 
@@ -49,7 +47,6 @@ int main(void)
 			check = execve(args[0], args, NULL);
 			if (check == -1)
 			{
-				perror(s);
 				return (1);
 			}
 		}
@@ -58,7 +55,6 @@ int main(void)
 			check = waitpid(cmd, &status, 0);
 			if (check == -1)
 			{
-				perror(s);
 				return (1);
 			}
 		}
