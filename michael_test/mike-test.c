@@ -12,7 +12,7 @@ int main(void)
 	int status, count = 0;
 	ssize_t check;
 	char **args;
-	const char *buf = NULL;
+	char *buf = NULL;
 
 	args = malloc(sizeof(char *) * size);
 	if (!args)
@@ -63,7 +63,7 @@ int main(void)
 				return (1);
 			}
 		}
-		free(buf);
+		free(str);
 		free(args);
 		buf = NULL;
 	}
