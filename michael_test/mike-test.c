@@ -6,19 +6,14 @@
 #include <sys/wait.h>
 int main(void)
 {
-	char *sep = "\n ", *buf, *word;
+	char *sep = "\n ", *word, *str;
 	size_t size = 64;
 	pid_t cmd;
 	int status, count = 0;
 	ssize_t check;
 	char **args;
+	const char *buf = NULL;
 
-	buf = malloc(size);
-	if (!buf)
-	{
-		perror("Error");
-		return (1);
-	}
 	args = malloc(sizeof(char *) * size);
 	if (!args)
 	{
@@ -36,8 +31,14 @@ int main(void)
 			printf("Something went wrong!\n");
 			break;
 		}
-
-		for (word = strtok(buf, sep); word != NULL; word = strtok(NULL, sep))
+		str = malloc(sizeof(char) * (strlen(buf)));
+		if (!str)
+		{
+			perror("Error");
+			return (1);
+		}
+		strcpy(str, buf);
+		for (word = strtok(str, sep); word != NULL; word = strtok(NULL, sep))
 		{
 			args[count] = word;
 			count++;
