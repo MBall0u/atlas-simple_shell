@@ -14,6 +14,7 @@ int main(void)
 	char **args; /*args is used for an array of char pointer to be dynamically allocated*/
 	char *buf = NULL; /*buf is for getline to dynamically alloced inside the function, when buf is NULL the bufsize is ignored*/
 	extern char **environ;
+	char *temp = "/usr/bin/";
 
 	while (1)
 	{
@@ -56,10 +57,8 @@ int main(void)
 		cmd = fork(); /*creates a child process and stored the pid in cmd*/
 		if (cmd == 0) /*check if this is the child process*/
 		{
-			if (strcmp(args[0], "ls") == 0) /*direct path to ls*/
-			{
-				args[0] = "/bin/ls";
-			}
+			strcat(temp, args[0]);
+			args[0] = temp;
 			check = execve(args[0], args, environ); /*executes program and stores the return value if there is one*/
 			if (check == -1) /*checks if there was an error while executing*/
 			{
