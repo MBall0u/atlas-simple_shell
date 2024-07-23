@@ -86,7 +86,7 @@ int main(void)
 
                 if (strcmp(args[0], "ls") == 0) /*direct path to ls*/
 				{
-                    path = "/bin/ls";
+                    path = "usr/bin/ls";
                 }
 				else if (strcmp(args[0], "cat") == 0) /*tried to do cat but doesn't work*/
 				{
