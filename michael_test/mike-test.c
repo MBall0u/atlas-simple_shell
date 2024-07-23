@@ -41,7 +41,7 @@ int main(void)
 			count++;
 		}
 
-		args = malloc(sizeof(char *) * count); /*this uses count to dynamically alloced the exact amount of memory needed*/
+		args = malloc(sizeof(char *) * (count + 1)); /*this uses count to dynamically alloced the exact amount of memory needed*/
 		if (!args) /*checks if the memory allocation fails for args*/
 		{
 			perror("Error");
@@ -54,7 +54,7 @@ int main(void)
 			args[count] = word; /*initializes the space in args to the current token*/
 			count++; /*moves forward in args*/
 		}
-
+		args[count] = NULL;
 		cmd = fork(); /*creates a child process and stored the pid in cmd*/
 		if (cmd == 0) /*check if this is the child process*/
 		{
