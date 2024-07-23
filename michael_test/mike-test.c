@@ -33,8 +33,8 @@ int main(void)
 			perror("Error");
 			exit(EXIT_FAILURE);
 		}
-		strcat(str, temp); /*this step is needed because a we cannot pass a string literal through strtok because it cannot be modified*/
-		strcat(str, buf);
+		strcat(temp, buf); /*this step is needed because a we cannot pass a string literal through strtok because it cannot be modified*/
+		strcpy(str, temp);
 
 		for (word = strtok(str, sep); word != NULL; word = strtok(NULL, sep)) /*this step is to see how many tokens there are*/
 		{
