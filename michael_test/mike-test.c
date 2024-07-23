@@ -59,6 +59,7 @@ int main(void)
 		{
 			strcat(temp, args[0]);
 			args[0] = temp;
+			printf("%s\n", args[0]);
 			check = execve(args[0], args, environ); /*executes program and stores the return value if there is one*/
 			if (check == -1) /*checks if there was an error while executing*/
 			{
