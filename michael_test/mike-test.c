@@ -13,6 +13,7 @@ int main(void)
 	ssize_t check; /*takes the return value of each function and checks for errors*/
 	char **args; /*args is used for an array of char pointer to be dynamically allocated*/
 	char *buf = NULL; /*buf is for getline to dynamically alloced inside the function, when buf is NULL the bufsize is ignored*/
+	extern char **environ;
 
 	while (1)
 	{
@@ -29,7 +30,7 @@ int main(void)
 		if (!str) /*checks to see if memory allocation failed*/
 		{
 			perror("Error");
-			return (1);
+			exit(EXIT_FAILURE);
 		}
 		strcpy(str, buf); /*this step is needed because a we cannot pass a string literal through strtok because it cannot be modified*/
 
@@ -42,7 +43,7 @@ int main(void)
 		if (!args) /*checks if the memory allocation fails for args*/
 		{
 			perror("Error");
-			return (1);
+			exit(EXIT_FAILURE);
 		}
 
 		count = 0; /*resets the count for adding the tokens to the args array*/
@@ -55,12 +56,21 @@ int main(void)
 		cmd = fork(); /*creates a child process and stored the pid in cmd*/
 		if (cmd == 0) /*check if this is the child process*/
 		{
-			check = execve(args[0], args, NULL); /*executes program and stores the return value if there is one*/
+			if (strcmp(args[0], "ls") == 0) /*direct path to ls*/
+			{
+				args[0] = "/bin/ls";
+			}
+			check = execve(args[0], args, environ); /*executes program and stores the return value if there is one*/
 			if (check == -1) /*checks if there was an error while executing*/
 			{
-				perror("Error");
-				return (1);
+				perror("Execve Error");
+				exit(EXIT_FAILURE);
 			}
+		}
+		else if (cmd == -1) /* -1 is failure*/
+		{
+			perror("fork failure");
+			exit(EXIT_FAILURE);
 		}
 		else /*if not a child then a parent*/
 		{
@@ -68,7 +78,7 @@ int main(void)
 			if (check == -1) /*checks if there was an error*/
 			{
 				perror("Error");
-				return (1);
+				exit(EXIT_FAILURE);
 			}
 		}
 		free(str); /*frees dynamically allocated memory for str*/
