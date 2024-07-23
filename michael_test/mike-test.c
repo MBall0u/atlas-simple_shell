@@ -27,13 +27,14 @@ int main(void)
 			printf("Something went wrong!\n");
 			break;
 		}
-		str = malloc(sizeof(char) * (strlen(buf) + 1)); /*allocated memory to str for the exact amount of buf + 1 for a null byte*/
+		str = malloc(sizeof(char) * (strlen(buf) + 1 + strlen(temp))); /*allocated memory to str for the exact amount of buf + 1 for a null byte*/
 		if (!str) /*checks to see if memory allocation failed*/
 		{
 			perror("Error");
 			exit(EXIT_FAILURE);
 		}
-		strcpy(str, buf); /*this step is needed because a we cannot pass a string literal through strtok because it cannot be modified*/
+		strcat(str, temp); /*this step is needed because a we cannot pass a string literal through strtok because it cannot be modified*/
+		strcat(str, buf);
 
 		for (word = strtok(str, sep); word != NULL; word = strtok(NULL, sep)) /*this step is to see how many tokens there are*/
 		{
@@ -57,8 +58,6 @@ int main(void)
 		cmd = fork(); /*creates a child process and stored the pid in cmd*/
 		if (cmd == 0) /*check if this is the child process*/
 		{
-			strcat(temp, args[0]);
-			args[0] = temp;
 			printf("%s\n", args[0]);
 			check = execve(args[0], args, environ); /*executes program and stores the return value if there is one*/
 			if (check == -1) /*checks if there was an error while executing*/
