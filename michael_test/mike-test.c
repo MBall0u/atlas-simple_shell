@@ -6,7 +6,7 @@
 #include <sys/wait.h>
 int main(void)
 {
-	char *sep = " \t\r\n:a;", *word, *str; /*sep is the separators used for strtok, word is for the token, and str is for a dynamic version of buf*/
+	char *sep = " \t\r\n:;", *word, *str; /*sep is the separators used for strtok, word is for the token, and str is for a dynamic version of buf*/
 	size_t size = 64; /*size is a general buffer amount, but it is only being used for getline and it is actually being ignored because buf is NULL*/
 	pid_t cmd; /*this holds the pid when fork is called so the two instances can run as needed*/
 	int status, count; /*status is for the waitpid function and checks when the child process terminates, and count is used for how many tokens there are and uses that to dynamically allocate an array on char pointers*/
