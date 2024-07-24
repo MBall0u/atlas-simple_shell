@@ -15,6 +15,7 @@ int main(void)
 	char *buf = NULL; /*buf is for getline to dynamically alloced inside the function, when buf is NULL the bufsize is ignored*/
 	extern char **environ;
 	char *temp = "/usr/bin/";
+	char *temp_str;
 
 	while (1)
 	{
@@ -35,8 +36,9 @@ int main(void)
 		}
 		strcpy(str, temp); /*this step is needed because a we cannot pass a string literal through strtok because it cannot be modified*/
 		strcat(str, buf);
+		temp_str = strdup(str);
 
-		for (word = strtok(str, sep); word != NULL; word = strtok(NULL, sep)) /*this step is to see how many tokens there are*/
+		for (word = strtok(temp_str, sep); word != NULL; word = strtok(NULL, sep)) /*this step is to see how many tokens there are*/
 		{
 			count++;
 		}
@@ -82,7 +84,8 @@ int main(void)
 		}
 		free(str); /*frees dynamically allocated memory for str*/
 		str = NULL;
-
+		free(temp_str);
+		temp_str = NULL;
 		free(args); /*frees dynamically allocated memory for args*/
 		args = NULL;
 	}
