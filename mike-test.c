@@ -14,7 +14,7 @@ int main(void)
 	char **args; /*args is used for an array of char pointer to be dynamically allocated*/
 	char *buf = NULL; /*buf is for getline to dynamically alloced inside the function, when buf is NULL the bufsize is ignored*/
 	extern char **environ;
-	char *temp = "/usr/bin/";
+	char *temp = "";
 	char *temp_str;
 
 	while (1)
