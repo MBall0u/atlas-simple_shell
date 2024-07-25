@@ -25,7 +25,8 @@ int main(void)
 		check = getline(&buf, &size, stdin); /*get input from standard input and dynamically allocates the needed memory to buf, ignoring size*/
 		if (check == -1) /*check to see if getline failed*/
 		{
-			printf("Something went wrong!\n");
+			free(buf);
+			buf = NULL;
 			break;
 		}
 		str = malloc(sizeof(char) * (strlen(buf) + 1 + strlen(temp))); /*allocated memory to str for the exact amount of buf + 1 for a null byte*/
