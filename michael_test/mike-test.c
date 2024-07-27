@@ -31,30 +31,32 @@ int main(void)
 			perror("Cannot find command");
 			exit(EXIT_FAILURE);
 		}
-
-		cmd = fork(); /*creates a child process and stored the pid in cmd*/
-		if (cmd == 0) /*check if this is the child process*/
+		else
 		{
-			printf("%s\n", args[0]);
-			check = execve(args[0], args, environ); /*executes program and stores the return value if there is one*/
-			if (check == -1) /*checks if there was an error while executing*/
+			cmd = fork(); /*creates a child process and stored the pid in cmd*/
+			if (cmd == 0) /*check if this is the child process*/
 			{
-				perror("Execve Error");
+				printf("%s\n", args[0]);
+				check = execve(args[0], args, environ); /*executes program and stores the return value if there is one*/
+				if (check == -1) /*checks if there was an error while executing*/
+				{
+					perror("Execve Error");
+					exit(EXIT_FAILURE);
+				}
+			}
+			else if (cmd == -1) /* -1 is failure*/
+			{
+				perror("fork failure");
 				exit(EXIT_FAILURE);
 			}
-		}
-		else if (cmd == -1) /* -1 is failure*/
-		{
-			perror("fork failure");
-			exit(EXIT_FAILURE);
-		}
-		else /*if not a child then a parent*/
-		{
-			check = waitpid(cmd, &status, 0); /*waits on the child process to terminate*/
-			if (check == -1) /*checks if there was an error*/
+			else /*if not a child then a parent*/
 			{
-				perror("Error");
-				exit(EXIT_FAILURE);
+				check = waitpid(cmd, &status, 0); /*waits on the child process to terminate*/
+				if (check == -1) /*checks if there was an error*/
+				{
+					perror("Error");
+					exit(EXIT_FAILURE);
+				}
 			}
 		}
 		free(buf); /*frees dynamically allocated memory for str*/
