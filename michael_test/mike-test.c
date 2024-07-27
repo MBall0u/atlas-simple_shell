@@ -25,7 +25,6 @@ int main(void)
 		check = getline(&buf, &size, stdin); /*get input from standard input and dynamically allocates the needed memory to buf, ignoring size*/
 		if (check == -1) /*check to see if getline failed*/
 		{
-			free(buf);
 			buf = NULL;
 			break;
 		}
