@@ -22,10 +22,10 @@ int main(void)
 			break;
 		}
 
-		args = get_tokens(buf, sep);
-		path = path_get(environ);
-		path_args = get_tokens(path, sep);
-		args[0] = check_build(args[0], path_args);
+		args = get_tokens(buf, sep); /*makes an array of args from the string buf from getline*/
+		path = path_get(environ); /*gets the path from the environment*/
+		path_args = get_tokens(path, sep); /*makes an array of args from the path returned from the above function*/
+		args[0] = check_build(args[0], path_args); /*gets a workable path and puts it in postion 0 of the args array*/
 		if (args[0] == NULL)
 		{
 			perror("Cannot find command");
