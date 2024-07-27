@@ -9,7 +9,7 @@ int main(void)
 	char **args, **path_args; /*args is used for an array of char pointer to be dynamically allocated*/
 	char *buf = NULL; /*buf is for getline to dynamically alloced inside the function, when buf is NULL the bufsize is ignored*/
 	extern char **environ;
-	char *path;
+	char *path, *temp = NULL;
 
 	while (1)
 	{
@@ -25,14 +25,16 @@ int main(void)
 		args = get_tokens(buf, sep); /*makes an array of args from the string buf from getline*/
 		path = path_get(environ); /*gets the path from the environment*/
 		path_args = get_tokens(path, sep); /*makes an array of args from the path returned from the above function*/
-		args[0] = check_build(args[0], path_args); /*gets a workable path and puts it in postion 0 of the args array*/
-		if (args[0] == NULL)
+		temp = check_build(args[0], path_args); /*gets a workable path and puts it in postion 0 of the args array*/
+		if (temp == NULL)
 		{
-			perror("Cannot find command");
+			perror("Cannot find command\n");
 			exit(EXIT_FAILURE);
 		}
 		else
 		{
+			args[0] = temp;
+			printf("We are forking\n");
 			cmd = fork(); /*creates a child process and stored the pid in cmd*/
 			if (cmd == 0) /*check if this is the child process*/
 			{
@@ -40,13 +42,13 @@ int main(void)
 				check = execve(args[0], args, environ); /*executes program and stores the return value if there is one*/
 				if (check == -1) /*checks if there was an error while executing*/
 				{
-					perror("Execve Error");
+					perror("Execve Error\n");
 					exit(EXIT_FAILURE);
 				}
 			}
 			else if (cmd == -1) /* -1 is failure*/
 			{
-				perror("fork failure");
+				perror("fork failure\n");
 				exit(EXIT_FAILURE);
 			}
 			else /*if not a child then a parent*/
@@ -54,7 +56,7 @@ int main(void)
 				check = waitpid(cmd, &status, 0); /*waits on the child process to terminate*/
 				if (check == -1) /*checks if there was an error*/
 				{
-					perror("Error");
+					perror("Error\n");
 					exit(EXIT_FAILURE);
 				}
 			}
@@ -65,6 +67,8 @@ int main(void)
 		args = NULL;
 		free(path_args);
 		path_args = NULL;
+		free(temp);
+		temp = NULL;
 	}
 	return (0);
 }

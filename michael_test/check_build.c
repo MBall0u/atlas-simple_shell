@@ -12,7 +12,7 @@
 char *check_build(char *arg, char **path)
 {
 	struct stat st; /*the file info*/
-	char *temp; /*a temp string for the path arg and the input to get spliced*/
+	char *temp = NULL; /*a temp string for the path arg and the input to get spliced*/
 	int count = 1; /*arg position counter*/
 
 	if (stat(arg, &st) == 0) /*checks to see if the base argument is a valid path first*/
@@ -23,7 +23,9 @@ char *check_build(char *arg, char **path)
 	{
 		while (path[count] != NULL) /*loop that iterates through the passed path args*/
 		{
-			temp = path[count]; /*sets temp equal to the path are at position "count"*/
+			temp = malloc(sizeof(char) * (strlen(path[count]) + 2 + (strlen(arg))));
+			strcpy(temp, path[count]);
+			strcat(temp, "/");
 			strcat(temp, arg); /*adds the arg to the back of the path*/
 			if (stat(temp, &st) == 0) /*checks to see if new path is valid*/
 			{
