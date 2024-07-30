@@ -6,8 +6,6 @@
 */
 void free_all(char ***args, char ***path_args, char **buf, char **temp)
 {
-	int i;
-
 	free(*buf); /*frees dynamically allocated memory for str*/
 	*buf = NULL;
 	free(*args); /*frees dynamically allocated memory for args*/
