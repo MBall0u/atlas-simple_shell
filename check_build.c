@@ -29,7 +29,14 @@ char *check_build(char *arg, char **path)
 			strcat(temp, arg); /*adds the arg to the back of the path*/
 			if (stat(temp, &st) == 0) /*checks to see if new path is valid*/
 			{
-				return (temp); /*if it is valid then it returns to the calling function with the new path*/
+				if (access(temp, X_OK) == 0)
+				{
+					for (count = 0; (*path)[count] != NULL; count++)
+					{
+						free((*path)[count]);
+					}
+					return (temp); /*if it is valid then it returns to the calling function with the new path*/
+				}
 			}
 			count++; /*if that path is not valid then it goes to the next path arg*/
 		}
