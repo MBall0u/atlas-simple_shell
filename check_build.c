@@ -31,10 +31,6 @@ char *check_build(char *arg, char **path)
 			{
 				if (access(temp, X_OK) == 0)
 				{
-					for (count = 0; path[count] != NULL; count++)
-					{
-						free(path[count]);
-					}
 					return (temp); /*if it is valid then it returns to the calling function with the new path*/
 				}
 			}
