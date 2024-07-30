@@ -26,29 +26,20 @@ int loop_for_interactive(void)
 		}
 
 		args = get_tokens(buf, sep); /*makes an array of args from the string buf from getline*/
-		if (strcmp(args[0], "exit") == 0) /*if they typed exit this will exit*/
+		path = path_get(environ); /*gets the path from the environment*/
+		path_args = get_tokens(path, sep); /*makes an array of args from the path returned from the above function*/
+		temp = check_build(args[0], path_args); /*gets a workable path and puts it in postion 0 of the args array*/
+		if (temp == NULL)
 		{
-            printf("\nExiting Super Cool Guy Shell...\n\n"); /*dumb message to change*/
-            intermediate_free(&buf, &args); /*free memory of lin*/
-            return EXIT_SUCCESS;
-        }
+			perror("Cannot find command\n");
+			exit(EXIT_FAILURE);
+		}
 		else
 		{
-			path = path_get(environ); /*gets the path from the environment*/
-			path_args = get_tokens(path, sep); /*makes an array of args from the path returned from the above function*/
-			temp = check_build(args[0], path_args); /*gets a workable path and puts it in postion 0 of the args array*/
-			if (temp == NULL)
-			{
-				perror("Cannot find command\n");
-				exit(EXIT_FAILURE);
-			}
-			else
-			{
-				args[0] = strdup(temp);
-				function_call(args, environ);
-			}
-			free_all(&args, &path_args, &buf, &temp);
+			args[0] = strdup(temp);
+			function_call(args, environ);
 		}
+		free_all(&args, &path_args, &buf, &temp);
 	}
 	return (0);
 }	
