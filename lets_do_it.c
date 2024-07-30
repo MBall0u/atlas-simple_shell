@@ -12,11 +12,9 @@ void function_call(char **args, char **env)
 	pid_t cmd;
 	int status;
 	ssize_t check;
-	printf("We are forking\n");
 	cmd = fork(); /*creates a child process and stored the pid in cmd*/
 	if (cmd == 0) /*check if this is the child process*/
 	{
-		printf("%s\n", args[0]);
 		check = execve(args[0], args, env); /*executes program and stores the return value if there is one*/
 		if (check == -1) /*checks if there was an error while executing*/
 		{
