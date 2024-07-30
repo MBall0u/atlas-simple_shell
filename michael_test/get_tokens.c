@@ -17,7 +17,7 @@ char **get_tokens(char *buf, char *sep)
 	str = malloc(sizeof(char) * (strlen(buf) + 1)); /*dynamically allocating the memory for string*/
 	if (!str)
 	{
-		perror("Allocation Error");
+		perror("Allocation Error\n");
 		exit(EXIT_FAILURE);
 	}
 	strcpy(str, buf); /*copies the buffer to the allocated string*/
@@ -31,7 +31,7 @@ char **get_tokens(char *buf, char *sep)
 	args = malloc(sizeof(char *) * (count + 1)); /*dynamically allocates an array of char pointers based off of the count*/
 	if (!args)
 	{
-		perror("Allocation Error");
+		perror("Allocation Error\n");
 		exit(EXIT_FAILURE);
 	}
 
